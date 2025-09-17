@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "539560223675",
+    "project_id": "flashstudy-de618",
+    "storage_bucket": "flashstudy-de618.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539560223675:android:a97a3c01471437f0a09a9e",
+        "android_client_info": {
+          "package_name": "com.FlashStudy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATzVbRpoAKz0MB-L6ArJb_qiGCYWe5PtY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
