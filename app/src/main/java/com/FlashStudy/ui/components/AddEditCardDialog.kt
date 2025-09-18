@@ -232,19 +232,24 @@ fun AddEditCardDialog(
                         Text("Cancelar")
                     }
                     Spacer(modifier = Modifier.width(8.dp))
+
+                    val isFormValid = topico.isNotBlank() &&
+                            pergunta.isNotBlank() &&
+                            alternativas.count { it.isNotBlank() } >= 2
+
                     Button(
                         onClick = {
+                            // Envia apenas as alternativas que foram preenchidas
+                            val filledAlternativas = alternativas.filter { it.isNotBlank() }
                             onConfirm(
                                 topico,
                                 pergunta,
-                                alternativas,
+                                filledAlternativas,
                                 respostaIndex,
                                 localizacao.ifEmpty { null }
                             )
                         },
-                        enabled = topico.isNotBlank() &&
-                                pergunta.isNotBlank() &&
-                                alternativas.all { it.isNotBlank() }
+                        enabled = isFormValid // Usa a nova lógica de validação
                     ) {
                         Text(if (card == null) "Adicionar" else "Salvar")
                     }
