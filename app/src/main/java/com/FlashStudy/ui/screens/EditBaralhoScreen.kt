@@ -51,9 +51,7 @@ fun EditBaralhoScreen(
     val saveEvent by editViewModel.saveEvent.collectAsState()
     LaunchedEffect(saveEvent) {
         if (saveEvent) {
-            // opcional: recarregar na tela anterior
             baralhoViewModel.fetchBaralhoById(baralhoId)
-            // volta para a lista de baralhos
             navController.popBackStack()
             editViewModel.clearSaveEvent()
         }
@@ -84,8 +82,9 @@ fun EditBaralhoScreen(
                     IconButton(
                         onClick = { editViewModel.saveBaralho() }
                     ) {
+                        // --- ÍCONE CORRIGIDO AQUI ---
                         Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
+                            imageVector = Icons.Default.Check, // Ícone de "Salvar" mais intuitivo
                             contentDescription = "Salvar Baralho"
                         )
                     }
