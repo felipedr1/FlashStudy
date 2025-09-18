@@ -20,7 +20,7 @@ object BaralhoService {
     private val json   = Json { ignoreUnknownKeys = true }
     private val JSON   = "application/json".toMediaType()
 
-    private const val BASE = "http://10.0.2.2:8080/baralhos"   // ajuste se mudar host
+    private const val BASE = "http://10.0.2.2:8080/api/baralhos"   // ajuste se mudar host
 
     /*--------------------------- GET /baralhos ---------------------------*/
     suspend fun getAll(): List<BaralhoBancoDados> = withContext(Dispatchers.IO) {

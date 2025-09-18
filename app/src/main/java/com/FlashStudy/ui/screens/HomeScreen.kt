@@ -15,8 +15,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Analytics
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -25,6 +28,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -54,15 +59,15 @@ fun HomeScreen(
     onLocationClick: () -> Unit
 ) {
     val baralhos by viewModel.baralhos.collectAsState()
-    Log.d("BaralhoService", "Resposta do backend na lista: $baralhos")
-
     val isDialogOpen by viewModel.isDialogOpen.collectAsState()
     val currentNearbyLocation by viewModel.currentNearbyLocation.collectAsState()
+    var selectedTab by remember { mutableStateOf(0) }
+    val tabs = listOf("Início", "Analytics", "Compartilhar")
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Anki App") },
+                title = { Text("FlashStudy") }, // Título corrigido
                 actions = {
                     NearbyLocationIndicator(currentNearbyLocation)
 
@@ -79,6 +84,25 @@ fun HomeScreen(
             FloatingActionButton(onClick = { viewModel.showDialog() }) {
                 Icon(Icons.Default.Add, contentDescription = "Adicionar Baralho")
             }
+        },
+        // A Barra de Navegação foi adicionada aqui
+        bottomBar = {
+            NavigationBar {
+                tabs.forEachIndexed { index, title ->
+                    NavigationBarItem(
+                        icon = {
+                            when (index) {
+                                0 -> Icon(Icons.Filled.Home, contentDescription = title)
+                                1 -> Icon(Icons.Filled.Analytics, contentDescription = title)
+                                2 -> Icon(Icons.Filled.Share, contentDescription = title)
+                            }
+                        },
+                        label = { Text(title) },
+                        selected = selectedTab == index,
+                        onClick = { selectedTab = index }
+                    )
+                }
+            }
         }
     ) { paddingValues ->
         Box(
@@ -87,7 +111,6 @@ fun HomeScreen(
                 .padding(paddingValues)
         ) {
             if (baralhos.isEmpty()) {
-                // Exibe uma mensagem quando não há baralhos
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -98,7 +121,6 @@ fun HomeScreen(
                     )
                 }
             } else {
-                // Lista de baralhos
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -115,14 +137,11 @@ fun HomeScreen(
                 }
             }
 
-            // Dialog para adicionar novo baralho
             if (isDialogOpen) {
-                Log.d("HomeScreen", "isDialogOpen é true, mostrando o diálogo.")
                 AddBaralhoDialog(
                     onDismiss = { viewModel.hideDialog() },
                     onConfirm = { titulo ->
                         viewModel.adicionarBaralho(titulo)
-                        // A responsabilidade de fechar o diálogo agora é do ViewModel
                     }
                 )
             }
